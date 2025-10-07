@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>StudentPanel</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/studentLogin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+            <div class="text-center"><h4><span class="material-symbols-outlined">person</span> View Pending Obligation</h4></div>
+            <hr class="my-2" />
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <input type="text" id="txtUsername" class="form-control text-center" placeholder="I.D Number" />
+                    </div>
+                    <div class="text-center mt-2">
+                        <button type="submit" id="post-data" class="btn btn-primary btn-block" data-action="post-data">Review</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        document.getElementById('post-data').addEventListener('click', function () {
+            $("#post-data").prop("disabled", true);
+            $("#post-data").html('Reviewing...');
+
+            if ($('#txtUsername').val() == '') {
+                $('#noRecords').modal('show');
+                document.getElementById("noRecordsLabel").innerHTML = 'Fill required field';
+                $("#post-data").prop("disabled", false);
+                $("#post-data").html('Review');
+            } else {
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("studentDashboard", "dashboard")?studentid=' + encodeURIComponent($('#txtUsername').val());
+                }, 2000);
+            }
+        });
+
+    </script>
+</body>
+</html>

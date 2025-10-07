@@ -1,0 +1,284 @@
+﻿@using front3.Models
+@model HomeModel3
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MarshallList</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+    <!-- Error Toast -->
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-danger">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="errorToastMessage">
+                <!-- Error message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="successToastMessage">
+                <!-- Success message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmStatusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header text-bg-info">
+                    <h5 class="modal-title">Confirmation Key</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Please enter your key to deactivate this marshall:</p>
+                    <input type="password" id="confirmKey" class="form-control" placeholder="Enter your key">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmStatusChange">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New Staff Modal -->
+    <div class="modal fade" id="createMarshallModal" tabindex="-1" aria-labelledby="createMarshallModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createMarshallModalLabel">Add New Marshall</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createMarshallForm">
+                        <div class="mb-3">
+                            <label for="marshallName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="marshallName" placeholder="Enter name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="marshallPassword" class="form-label">Key</label>
+                            <input type="password" class="form-control" id="marshallPassword" placeholder="Creat new Key" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="addMarshall">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirecting Modal -->
+    <div class="modal fade" id="redirectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <span id="lblMessage" class="text-break">Redirecting...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-absolute top-50 start-50 translate-middle w-100" style="max-width: 500px;">
+        <!-- Go Back Button (Placed Above the Card) -->
+        <div class="text-start mb-3">
+            <button id="goToDashboard" class="btn btn-secondary d-flex align-items-center gap-1">
+                <span class="material-symbols-outlined">arrow_back</span>
+                <span class="text-nowrap">Go Back</span>
+            </button>
+        </div>
+
+        <!-- Header with "Create New Marshall" Button -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="m-0">Authorized Marshalls</h3>
+            <button id="createMarshall" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                <span class="material-symbols-outlined">add</span>
+                <span class="text-nowrap">Add new marshall</span>
+            </button>
+        </div>
+
+        <div class="position-absolute top-50 start-50 translate-middle w-100" style="max-width: 500px;">
+            <!-- Go Back Button (Placed Above the Card) -->
+            <div class="text-start mb-3">
+                <button class="goToDashboard btn btn-secondary d-flex align-items-center gap-1">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span class="text-nowrap">Go Back</span>
+                </button>
+            </div>
+            <!-- Header with "Create New Marshall" Button -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0">Authorized Marshalls</h3>
+                <button id="createMarshall" class="btn btn-primary btn-sm d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#createMarshallModal">
+                    <span class="material-symbols-outlined">add</span>
+                    <span class="text-nowrap">Add Marshall</span>
+                </button>
+            </div>
+            <div class="card shadow-lg p-3">
+                <div class="card-body text-center">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (loginmodel item in Model.Marshalls)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.role)</td>
+                                    <td>
+                                        <button class="btn btn-sm status-btn @(item.status == "Active" ? "btn-success" : "btn-danger disabled")"
+                                                data-name="@item.name" data-status="@item.status">
+                                            @item.status
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+
+    <script type="text/javascript">
+        $('.status-btn').click(function () {
+            let staffName = $(this).data("name");
+
+            // Show confirmation modal
+            $('#confirmStatusModal').modal('show');
+
+            // When 'Confirm' is clicked, send AJAX request
+            $('#confirmStatusChange').off('click').on('click', function () {
+                let enteredKey = $("#confirmKey").val().trim(); // Fetch input value inside the click event
+
+                if (enteredKey === "") {
+                    document.getElementById('errorToastMessage').innerText = 'Required field.';
+                    var toast = new bootstrap.Toast(document.getElementById('errorToast'));
+                    toast.show();
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("AccChangeStatus", "AccStats")',
+                    type: 'PUT',
+                    data: {
+                        u_k: enteredKey,
+                        name: staffName
+                    },
+                    dataType: 'text',
+                    contentType: "application/x-www-form-urlencoded",
+                    success: function (data) {
+                        if (data === 'Successfully changed status.') {
+                            document.getElementById('successToastMessage').innerText = data;
+                            var toast = new bootstrap.Toast(document.getElementById('successToast'));
+                            toast.show();
+
+                            setTimeout(function () {
+                                $('#confirmStatusModal').modal('hide');
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            document.getElementById('errorToastMessage').innerText = data;
+                            var toast = new bootstrap.Toast(document.getElementById('errorToast'));
+                            toast.show();
+                        }
+                    },
+                    error: function (jqXHR) {
+                        document.getElementById('errorToastMessage').innerText = jqXHR.responseText;
+                        var toast = new bootstrap.Toast(document.getElementById('errorToast'));
+                        toast.show();
+                    }
+                });
+            });
+        });
+
+        document.getElementById("addMarshall").addEventListener("click", function () {
+            var addButton = $("#addMarshall");
+            var nameOfStaff = document.getElementById("marshallName").value.trim();
+            var password = document.getElementById("marshallPassword").value.trim();
+
+            // Disable button & show loading text
+            addButton.prop("disabled", true).html('Adding...');
+
+            // Validate inputs
+            if (nameOfStaff === "" || password === "") {
+                alert("Please fill in all fields.");
+                addButton.prop("disabled", false).html('Add');
+                return;
+            }
+
+            // Send AJAX request
+            $.ajax({
+                url: '@Url.Action("NewStaff", "AddNewStaff")',
+                type: 'POST',
+                data: {
+                    name: nameOfStaff,
+                    u_k: password
+                },
+                dataType: 'text',
+                contentType: "application/x-www-form-urlencoded",
+                success: function (data) {
+                    if (data === 'Successfully Added.') {
+                        alert("New marshall added!");
+                        $('#createMarshallModal').modal('hide');
+                        // Reload after modal is completely hidden
+                        $('#createMarshallModal').on('hidden.bs.modal', function () {
+                            location.reload();
+                        });
+                    } else {
+                        alert("This key is assigned to someone else!");
+                        document.getElementById("createMarshallForm").reset();
+                        addButton.prop("disabled", false).html('Add');
+                    }
+                },
+                error: function (jqXHR) {
+                    document.getElementById('errorToastMessage').innerText = jqXHR.responseText;
+                    var toast = new bootstrap.Toast(document.getElementById('errorToast'));
+                    toast.show();
+
+                    // Re-enable button in case of an error
+                    addButton.prop("disabled", false).html('Add');
+                }
+            });
+        });
+
+        $('.goToDashboard').click(function () {
+                $('#redirectModal').modal('show');
+                setTimeout(function () {
+                    $('#redirectModal').modal('hide');
+                    window.location.href = '@Url.Action("AdminDashboard", "dashboard")';
+                }, 2000);
+        });
+
+    </script>
+</body>
+</html>
+

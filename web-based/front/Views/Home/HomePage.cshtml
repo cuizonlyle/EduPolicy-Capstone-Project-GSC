@@ -1,0 +1,339 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>HomePage</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="~/Content/homepage.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+
+    <div class="modal" tabindex="-1" id="RedirectModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    @Html.Label("Message", new { @id = "lblMessage", @class = "text-break" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+        <div id="toastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" id="close-data1" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastBody">
+                <!-- Toast message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel" style="color:ghostwhite;">Are you an authorized user?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" id="loginTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="admin-tab" data-bs-toggle="tab" data-bs-target="#admin" type="button" role="tab" aria-controls="admin" aria-selected="true">
+                                Admin Tab
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="marshal-tab" data-bs-toggle="tab" data-bs-target="#marshal" type="button" role="tab" aria-controls="marshal" aria-selected="false">
+                                Marshal Tab
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="loginTabsContent">
+                        <!-- Admin Login Form -->
+                        <div class="tab-pane fade show active" id="admin" role="tabpanel" aria-labelledby="admin-tab">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="adminUsername" class="form-label bg-secondary" style="color:white;">Username</label>
+                                    <input type="text" class="form-control" id="adminUsername" placeholder="Enter your username">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="adminPassword" class="form-label bg-secondary" style="color:white;">Password</label>
+                                    <input type="password" class="form-control" id="adminPassword" placeholder="Enter your password">
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="adminProceed">Proceed</button>
+                            </form>
+                        </div>
+                        <!-- Marshal Login Form -->
+                        <div class="tab-pane fade" id="marshal" role="tabpanel" aria-labelledby="marshal-tab">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="marshalPassword" class="form-label bg-secondary" style="color:ghostwhite;">Enter Key</label>
+                                    <input type="password" class="form-control" id="uk" placeholder="Unique Key">
+                                </div>
+                                <button type="submit" class="btn btn-primary" id="marshallProceed">Proceed</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="close-data1" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 bg-info">
+            <nav class="navbar navbar-info bg-info">
+                <div class="container-fluid">
+                    <img src="~/Content/logos/kalilogo.png" alt="Logo" height="50" />
+                    <div class="d-flex justify-content-end me-2">
+                        <!-- Login Button for Normal Login -->
+                        <button id="loginId" class="btn btn-outline-primary d-flex align-items-center">
+                            Student Panel
+                            <span class="material-symbols-outlined">login</span>
+                        </button>
+
+                        <!-- New Login Button -->
+                        <button id="marshallLogin" class="btn btn-outline-success d-flex align-items-center ms-2" data-bs-toggle="modal" data-bs-target="#loginModal">
+                            Login
+                            <span class="material-symbols-outlined">admin_panel_settings</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+    <!-- Carousel -->
+    <div id="carouselExampleControls" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="container">
+                    <h1 class="text-center mt-5 gold-text">
+                        EduPolicy: Web-based Policy <br />
+                        Management System
+                    </h1>
+
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <h3 class="mt-5 large-shadow-text">To maintain a safe and conducive learning environment by effectively addressing and managing instances of rule infractions.</h3>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="~/Content/gsc-logo.png" class="w-100 h-auto" alt="First Slide" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="container">
+                    <h1 class="text-center mt-5 gold-text">
+                        About
+                    </h1>
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h3 class="mt-2 large-shadow-text">
+                                "At Golden Success College, our primary goal is to foster a safe and conducive learning environment where every student can thrive academically, socially, and emotionally. Our school violation system is
+                                designed to uphold this commitment by promptly and effectively addressing instances of rule infractions. By maintaining clear and consistent standards of behavior, we strive to ensure that all students
+                                feel secure and respected, enabling them to focus on their studies and personal growth. Through proactive measures and fair enforcement, we aim to cultivate a culture of accountability, responsibility,
+                                and mutual respect among our student body. Together, we work towards creating an environment where every individual can reach their full potential and contribute positively to the school community."
+                            </h3>
+                            <img src="~/Content/gsu-logo.png" class="img-fluid mt-3" alt="Second Slide Image" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="false"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="false"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer fixed-bottom bg-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <h3 class="large-shadow-text-foot">Phone Number</h3>
+                    <a class="btn btn-outline-secondary">+63 920 920 6337</a>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="large-shadow-text-foot">Email</h3>
+                    <a class="btn btn-outline-success">goldensuccess_college@yahoo.com</a>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="large-shadow-text-foot">Website</h3>
+                    <a href="https://golden-success.com" target="_blank" class="btn btn-outline-warning">Golden Success College Inc.</a>
+                </div>
+                <div class="col-sm-3">
+                    <h3 class="large-shadow-text-foot">Facebook</h3>
+                    <a href="https://www.facebook.com/gsci07" target="_blank" class="btn btn-outline-primary">GSC Cebu</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#loginId').click(function () {
+                $('#RedirectModal').modal('show');
+                document.getElementById("lblMessage").innerHTML = "Redirecting please wait...";
+                setTimeout(function () {
+                    $('#RedirectModal').modal('hide');
+                    window.location.href = "@Url.Action("StudentPanel", "ViewMyObligation")";
+                }, 2000);
+            });
+        });
+
+        $('#marshallProceed').click(function () {
+            $("#marshallProceed").prop("disabled", true);
+            $("#marshallProceed").html('Please wait...');
+
+            if ($('#marshalPassword').val() == '') {
+                // Replace modal with toast for missing field
+                $('#toastBody').html('Missing field!');
+                var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                toast.show();
+            } else {
+                $.ajax({
+                    url: '@Url.Action("MarshallLogin", "MarshallLogin")',
+                    data: {
+                        uk: $('#uk').val()
+                    },
+                    dataType: 'text',
+                    contentType: "application/x-www-form-urlencoded",
+                    method: 'POST',
+                    success: function (data) {
+                        if (data == 'Successfully Logged in') {
+                            // Show success message in toast
+                            $('#toastBody').html('Successfully logged-in.');
+                            var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                            toast.show();
+
+                            $('#marshallProceed').prop("disabled", false);
+                            $('#marshallProceed').html("Proceed");
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("Search_Student", "Home")';
+                            }, 2000);
+                        } else {
+                            // Show failure message in toast
+                            $('#toastBody').html(data);
+                            var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                            toast.show();
+
+                            $("#marshallProceed").prop("disabled", false);
+                            $("#marshallProceed").html('Proceed');
+                        }
+                    },
+                    error: function (jqXHR, exception) {
+                        // Show error message in toast
+                        $('#toastBody').html(jqXHR.responseText);
+                        var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                        toast.show();
+
+                        $("#get-data").prop("disabled", false);
+                        $("#get-data").html('Update Profile');
+                    }
+                });
+            }
+        });
+
+        $('#adminProceed').click(function () {
+            $("#adminProceed").prop("disabled", true);
+            $("#adminProceed").html('Please wait...');
+
+            if ($('#adminUsername').val() == '') {
+                // Replace modal with toast for missing field
+                $('#toastBody').html('Username Required Field!');
+                var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                toast.show();
+            } else
+                if ($('#adminPassword').val() == '') {
+                    $('#toastBody').html('Password Required Field!');
+                    var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                    toast.show();
+                }
+                else {
+                    $.ajax({
+                        url: '@Url.Action("AdmLogin", "AdmLogin")',
+                        data: {
+                            username: $('#adminUsername').val(),
+                            userpassword: $('#adminPassword').val()
+                        },
+                        dataType: 'text',
+                        contentType: "application/x-www-form-urlencoded",
+                        method: 'POST',
+                        success: function (data) {
+                            if (data == 'Successfully Logged in') {
+                                // Show success message in toast
+                                $('#toastBody').html('Successfully logged-in.');
+                                var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                                toast.show();
+
+                                $('#adminProceed').prop("disabled", false);
+                                $('#adminProceed').html("Proceed");
+                                setTimeout(function () {
+                                    window.location.href = '@Url.Action("AdminDashboard", "dashboard")';
+                                }, 2000);
+                            } else {
+                                // Show failure message in toast
+                                $('#toastBody').html(data);
+                                var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                                toast.show();
+
+                                $("#adminProceed").prop("disabled", false);
+                                $("#adminProceed").html('Proceed');
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            // Show error message in toast
+                            $('#toastBody').html(jqXHR.responseText);
+                            var toast = new bootstrap.Toast(document.getElementById('toastMessage'));
+                            toast.show();
+
+                            $("#get-data").prop("disabled", false);
+                            $("#get-data").html('Update Profile');
+                        }
+                    });
+                }
+        });
+
+
+
+        $('#close-data1').click(function () {
+            // Define an array of button configurations
+            const buttons = [
+                { id: '#marshallProceed', label: 'Login' },
+                { id: '#adminProceed', label: 'Login' }
+            ];
+
+            // Iterate through each button and update its properties
+            buttons.forEach(button => {
+                $(button.id).prop('disabled', false); // Enable the button
+                $(button.id).html(button.label);     // Set the button label
+            });
+        });
+    </script>
+
+</body>
+</html>

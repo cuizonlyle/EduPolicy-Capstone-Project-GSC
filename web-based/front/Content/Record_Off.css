@@ -1,0 +1,13 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Removed @keyframes glowing */
+
+#staffVal {
+    font-weight: bold;
+    color: #ff6f61; /* Set a static color */
+    /* Removed animation and text-shadow for the glowing effect */
+}

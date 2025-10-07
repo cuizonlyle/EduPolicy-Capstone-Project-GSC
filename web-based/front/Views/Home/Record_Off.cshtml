@@ -1,0 +1,289 @@
+﻿﻿@using front.Models
+@model HomeModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Record_Off</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link href="~/Content/Record_Off.css" rel="stylesheet" />
+</head>
+<body>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+
+    <div class="modal" tabindex="-1" id="exampleModal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-warning">Warning</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    @Html.Label("Message", new { @id = "lblMessage1", @class = "text-break" })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close-data1" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" tabindex="-1" id="exampleModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    @Html.Label("Message", new { @id = "lblMessage", @class = "text-break" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redirecting Modal -->
+    <div class="modal fade" id="redirectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-secondary text-center">
+                    Redirecting...
+                </div>
+                <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Go Back Button with Modal Trigger -->
+        <div class="mb-3">
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#redirectModal">
+                ← Go Back
+            </button>
+        </div>
+        <div class="row justify-content-center mb-5 mt-5">
+            <div class="col-lg-8 col-12">
+                <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                    <h3 class="text-center text-warning-emphasis">VIOLATOR</h3>
+                    <div class="table-responsive">
+                        <table class="table table-bordered border-primary table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Gender</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (SearchStudentModel1 item in Model.studentList)
+                                {
+                                    <tr>
+                                        <td class="idVal" data-id="@Html.DisplayFor(modelItem => item.student_id)">@Html.DisplayFor(modelItem => item.student_id)</td>
+                                        <td class="lastnameVal" data-id="@Html.DisplayFor(modelItem => item.last_name)">@Html.DisplayFor(modelItem => item.last_name)</td>
+                                        <td class="firstnameVal" data-id="@Html.DisplayFor(modelItem => item.first_name)">@Html.DisplayFor(modelItem => item.first_name)</td>
+                                        <td class="middlenameVal" data-id="@Html.DisplayFor(modelItem => item.middle_name)">@Html.DisplayFor(modelItem => item.middle_name)</td>
+                                        <td class="gender" data-id="@Html.DisplayFor(modelItem => item.gender)">@Html.DisplayFor(modelItem => item.gender)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <h2 class="text-center text-danger border border-warning p-3 rounded">
+                            SELECT A VIOLATION FROM THE LIST BELOW
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="accordion" id="offenseAccordion">
+                            <!-- Light Offense Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="lightOffenseHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lightOffenseCollapse" aria-expanded="false" aria-controls="lightOffenseCollapse">
+                                        <h3 class="text-center text-secondary w-100">Light Offense</h3>
+                                    </button>
+                                </h2>
+                                <div id="lightOffenseCollapse" class="accordion-collapse collapse" aria-labelledby="lightOffenseHeading" data-bs-parent="#offenseAccordion">
+                                    <div class="accordion-body">
+                                        @foreach (offModels item in Model.loffenseList)
+                                        {
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input violation-checkbox" type="checkbox" value="@item.lo_id" id="lo_@item.lo_id" data-violation="@item.lo_def">
+                                                <label class="form-check-label" for="lo_@item.lo_id">
+                                                    <button type="button" class="btn btn-outline-secondary w-100" data-bs-toggle="popover" data-bs-content="@Html.DisplayFor(modelItem => item.lo_id)">
+                                                        @Html.DisplayFor(modelItem => item.lo_def)
+                                                    </button>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Less Serious Offense Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="lessSeriousOffenseHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lessSeriousOffenseCollapse" aria-expanded="false" aria-controls="lessSeriousOffenseCollapse">
+                                        <h3 class="text-center text-warning w-100">Less Serious Offense</h3>
+                                    </button>
+                                </h2>
+                                <div id="lessSeriousOffenseCollapse" class="accordion-collapse collapse" aria-labelledby="lessSeriousOffenseHeading" data-bs-parent="#offenseAccordion">
+                                    <div class="accordion-body">
+                                        @foreach (offModels item2 in Model.lsoffenseList)
+                                        {
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input violation-checkbox" type="checkbox" value="@Html.DisplayFor(modelItem => item2.lso_id)" id="@Html.DisplayFor(modelItem => item2.lso_id)" data-violation="@Html.DisplayFor(modelItem => item2.lso_def)">
+                                                <label class="form-check-label" for="@Html.DisplayFor(modelItem => item2.lso_id)">
+                                                    <button type="button" class="btn btn-outline-warning w-100" data-bs-toggle="popover" data-bs-content="@Html.DisplayFor(modelItem => item2.lso_id)">
+                                                        @Html.DisplayFor(modelItem => item2.lso_def)
+                                                    </button>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Serious Offense Section -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="seriousOffenseHeading">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#seriousOffenseCollapse" aria-expanded="false" aria-controls="seriousOffenseCollapse">
+                                        <h3 class="text-center text-danger w-100">Serious Offense</h3>
+                                    </button>
+                                </h2>
+                                <div id="seriousOffenseCollapse" class="accordion-collapse collapse" aria-labelledby="seriousOffenseHeading" data-bs-parent="#offenseAccordion">
+                                    <div class="accordion-body">
+                                        @foreach (offModels item3 in Model.soffenseList)
+                                        {
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input violation-checkbox" type="checkbox" value="@Html.DisplayFor(modelItem => item3.so_id)" id="@Html.DisplayFor(modelItem => item3.so_id)" data-violation="@Html.DisplayFor(modelItem => item3.so_def)">
+                                                <label class="form-check-label" for="@Html.DisplayFor(modelItem => item3.so_id)">
+                                                    <button type="button" class="btn btn-outline-danger w-100" data-bs-toggle="popover" data-bs-content="@Html.DisplayFor(modelItem => item3.so_id)">
+                                                        @Html.DisplayFor(modelItem => item3.so_def)
+                                                    </button>
+                                                </label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="selectedViolations" class="mb-4 mt-2">
+                            <h4 class="text-center text-info">Selected Violations</h4>
+                            <ul id="violationsList" class="list-group"></ul>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="button" id="post-data" class="btn btn-success w-100" data-action="post-data">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function generateRandomPrio(length = 8) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            const charactersLength = characters.length;
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            return result;
+        }
+        $(document).ready(function () {
+
+            document.getElementById('redirectModal').addEventListener('shown.bs.modal', function () {
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Search_Student", "Home")';
+                }, 2000);
+            });
+
+            $('#post-data').click(function () {
+                // Disable the button and set text to "Please wait..."
+                $('#post-data').prop("disabled", true).html("Please wait...");
+
+                var idValue = document.querySelector('.idVal').getAttribute('data-id');
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                var checkedValues = [];
+
+                checkboxes.forEach(function (checkbox) {
+                    if (checkbox.checked) {
+                        checkedValues.push(checkbox.value);
+                    }
+                });
+
+                if (checkedValues.length === 0) {
+                    setTimeout(function () {
+                        $('#exampleModal1').modal('show');
+                        document.getElementById("lblMessage1").innerHTML = "Please fill the required fields.";
+                        $('#post-data').prop("disabled", false).html("Submit");
+                    }, 500);
+                } else {
+                    // Start sending AJAX requests sequentially
+                    sendAjaxRequestsSequentially(idValue, checkedValues, 0);
+                }
+            });
+        });
+
+        // Function to send AJAX requests sequentially
+        function sendAjaxRequestsSequentially(idValue, checkedValues, index) {
+            if (index >= checkedValues.length) {
+                // All requests have been sent
+                $('#exampleModal').modal('show');
+                document.getElementById("lblMessage").innerHTML = 'Submitted Successfully.';
+                $('#post-data').prop("disabled", false).html("Submit");
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Search_Student", "Home")';
+                }, 1500);
+                return;
+            }
+
+            // Find the row based on the idValue
+            var targetRow = $('.idVal[data-id="' + idValue + '"]').closest('tr');
+            var lastnameValue = targetRow.find('.lastnameVal').attr('data-id');
+            var firstnameValue = targetRow.find('.firstnameVal').attr('data-id');
+            var middlenameValue = targetRow.find('.middlenameVal').attr('data-id');
+            var genderValue = targetRow.find('.gender').attr('data-id');
+
+            // Send AJAX request for the current value
+            $.ajax({
+                url: '@Url.Action("AddViolation", "Violation")',
+                data: {
+                    studentid: idValue,
+                    last_name: lastnameValue,
+                    first_name: firstnameValue,
+                    middle_name: middlenameValue,
+                    gender: genderValue,
+                    off_id: checkedValues[index],
+                    prior_number: generateRandomPrio(10)
+                },
+                dataType: 'text',
+                contentType: "application/x-www-form-urlencoded",
+                method: 'POST',
+                success: function (data) {
+                    if (data == 'Submitted Successfully') {
+                        sendAjaxRequestsSequentially(idValue, checkedValues, index + 1);
+                    } else {
+                        $('#exampleModal1').modal('show');
+                        document.getElementById("lblMessage1").innerHTML = data;
+                        $("#post-data").prop("disabled", false).html('Submit');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    $('#exampleModal1').modal('show');
+                    document.getElementById("lblMessage1").innerHTML = 'Error submitting data.';
+                    $('#post-data').prop("disabled", false).html("Submit");
+                }
+            });
+        }
+
+    </script>
+    <script src="~/Scripts/Record_Off.js"></script>
+</body>
+</html>

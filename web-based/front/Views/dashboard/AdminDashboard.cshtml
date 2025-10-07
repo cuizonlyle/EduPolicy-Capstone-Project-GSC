@@ -1,0 +1,590 @@
+﻿@using front3.Models
+@model HomeModel3
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AdminDashboard</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+
+    <!-- Modal HTML -->
+    <div class="modal fade" id="reminderMsg" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Reminder</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Always review the sanction status using the student ID number before changing the violation status to "Settled" for strict monitoring purposes.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statusModalLabel">Change Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to change the status?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="noButton">No</button>
+                    <button type="button" class="btn btn-primary" id="yesButton">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Success Modal HTML -->
+    <div class="modal fade" id="changedStat" tabindex="-1" aria-labelledby="changedStatLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success" id="changedStatLabel">Success</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="changedStat1">
+                    <!-- Success message content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error Modal HTML -->
+    <div class="modal fade" id="noRecords" tabindex="-1" aria-labelledby="noRecordsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="noRecordsLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeBtn1"></button>
+                </div>
+                <div class="modal-body" id="noRecords1">
+                    <!-- Error message content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Redirecting Modal -->
+    <div class="modal fade" id="redirectModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <span class="text-break">Redirecting...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="exampleModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    @Html.Label("Message", new { @id = "lblMessage", @class = "text-break" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="exampleModal1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-warning">Warning</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    @Html.Label("Message", new { @id = "lblMessage1", @class = "text-break" })
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="close-data1" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-danger">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="errorToastMessage">
+                <!-- Error message will be inserted here -->
+            </div>
+        </div>
+    </div>
+    <!-- Success Toast -->
+    <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto text-success">Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="successToastMessage">
+                <!-- Success message will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-info">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex ms-auto">
+                    <button id="MarshallList" class="btn btn-outline-success mx-2 d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View Marshall List">
+                        <span class="material-symbols-outlined">supervisor_account</span>
+                    </button>
+                    <button id="logOut" class="btn btn-outline-danger mx-2 d-flex align-items-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Log out of your account">
+                        <span class="material-symbols-outlined">logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Profile Card -->
+            <div class="col-12 col-md-3 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Profile</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            @foreach (loginmodel item in Model.AdmMod)
+                            {
+                                <h4>Welcome, @Html.DisplayFor(modelItem => item.name)</h4>
+                            }
+                            <img src="~/Content/logos/adminicon.png" class="rounded-circle img-fluid" alt="Profile Image" style="max-width: 150px; height: auto;">
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Status Card -->
+            <div class="col-12 col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Current Violation Status</h5>
+                        <div>
+                            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#assignTaskModal">Assign a Task</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <span><strong>Unsettled:</strong> <span id="unsettledCount">5</span></span>
+                        </div>
+                        <div>
+                            <span><strong>Settled:</strong> <span id="settledCount">5</span></span>
+                        </div>
+                        <div class="table-responsive">
+                            <!-- Search Bar and Additional Form -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <input type="text" class="form-control w-25" id="searchInput" placeholder="Search by Last Name, I.D">
+
+                                <!-- New Form with Button -->
+                                <form class="d-flex">
+                                    <input type="text" class="form-control me-2 text-center" name="newInput" placeholder="Student ID Number" id="reviewSanct">
+                                    <button type="button" class="btn btn-primary" id="reviewSanction">Review</button>
+                                </form>
+                            </div>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Offense Type</th>
+                                        <th style="width: 15%;">Offense I.D</th>
+                                        <th style="width: 15%;">Student I.D</th>
+                                        <th style="width: 25%;">Student Name</th>
+                                        <th style="width: 10%;">Status</th>
+                                        <th style="width: 15%;">Date of Violation</th>
+                                        <th style="width: 10%;">Time of Violation</th>
+                                        <th style="width: 25%;">Disciplinary Officer</th>
+                                        <th style="width: 25%;">Violation Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                    @foreach (loginmodel item in Model.ViolationInfo)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.off_type)</td>
+                                            <td class="text-center offense-val" data-bs-toggle="popover" data-bs-content="@Html.DisplayFor(modelItem => item.off_def)">
+                                                <button value="@Html.DisplayFor(modelItem => item.prior_no)" type="button" class="btn btn-warning btn-sm textToCopy">
+                                                    @Html.DisplayFor(modelItem => item.off_id)
+                                                </button>
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.studentid)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.fullname)
+                                            </td>
+                                            <td class="stat-val" value="@Html.DisplayFor(modelItem => item.status)">
+                                                <button class="btn btn-sm status-btn" data-bs-toggle="modal" data-bs-target="#statusModal">
+                                                    @Html.DisplayFor(modelItem => item.status)
+                                                </button>
+                                            </td>
+                                            <td>@Html.DisplayFor(modelItem => item.date_of_v)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.time_of_v)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.name)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.prior_no)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Modal for Assign Task -->
+    <div class="modal fade" id="assignTaskModal" tabindex="-1" aria-labelledby="assignTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="assignTaskModalLabel">Setup Sanction</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <!-- Form for Student ID and Violation Number -->
+                    <form id="assignTaskForm">
+                        <div class="mb-3">
+                            <label for="violationNumber" class="form-label fw-bold">Violation Number</label>
+                            <input type="text" class="form-control w-100" id="violationNumber" name="violationNumber" placeholder="Enter Violation Number (A1aB2bC3)" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="offenseID" class="form-label fw-bold">Offense ID</label>
+                            <input type="text" class="form-control w-100" id="offenseID" name="offenseID" placeholder="Enter Offense ID (LO_01)" required>
+                        </div>
+                    </form>
+
+                    <!-- Sanction Selection using Dropdowns -->
+                    <div class="row row-cols-1">
+                        <!-- Type A Sanction - Light Offense -->
+                        <div class="col mb-2">
+                            <div class="dropdown w-100">
+                                <button class="btn btn-secondary dropdown-toggle w-100 text-start" type="button" id="lightOffenseDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Light Offense (Click to Select)
+                                </button>
+                                <ul class="dropdown-menu p-3 w-100">
+                                    @foreach (loginmodel item in Model.Light)
+                                    {
+                                        <li class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.sanction_id" id="typeA_@item.sanction_id">
+                                            <label class="form-check-label" for="typeA_@item.sanction_id">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="event.stopPropagation();">
+                                                    @item.sanction_def
+                                                </button>
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Type B Sanction - Less Serious Offense -->
+                        <div class="col mb-2">
+                            <div class="dropdown w-100">
+                                <button class="btn btn-warning dropdown-toggle w-100 text-start" type="button" id="lessSeriousDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Less Serious Offense (Click to Select)
+                                </button>
+                                <ul class="dropdown-menu p-3 w-100">
+                                    @foreach (loginmodel item in Model.Less)
+                                    {
+                                        <li class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.sanction_id" id="typeB_@item.sanction_id">
+                                            <label class="form-check-label" for="typeB_@item.sanction_id">
+                                                <button type="button" class="btn btn-sm btn-outline-warning" onclick="event.stopPropagation();">
+                                                    @item.sanction_def
+                                                </button>
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Type C Sanction - Serious Offense -->
+                        <div class="col mb-2">
+                            <div class="dropdown w-100">
+                                <button class="btn btn-danger dropdown-toggle w-100 text-start" type="button" id="seriousOffenseDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Serious Offense (Click to Select)
+                                </button>
+                                <ul class="dropdown-menu p-3 w-100">
+                                    @foreach (loginmodel item in Model.Serious)
+                                    {
+                                        <li class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@item.sanction_id" id="typeC_@item.sanction_id">
+                                            <label class="form-check-label" for="typeC_@item.sanction_id">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="event.stopPropagation();">
+                                                    @item.sanction_def
+                                                </button>
+                                            </label>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <button type="button" id="post-data" class="btn btn-lg btn-success w-100" data-action="post-data">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Scripts/admindashboard.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery-3.7.1.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            //Reminder
+            var reminder = new bootstrap.Modal(document.getElementById('reminderMsg'));
+            reminder.show();
+
+            // Auto Copy for all Offense I.D buttons
+            document.querySelectorAll(".textToCopy").forEach(button => {
+                button.addEventListener("click", function () {
+                    var text = this.innerText;
+                    navigator.clipboard.writeText(text).then(() => {
+                        // Show Bootstrap toast
+                        var toastMessage = document.getElementById("successToastMessage");
+                        var toastElement = document.getElementById("successToast");
+
+                        if (toastMessage && toastElement) {
+                            toastMessage.innerText = "Copied";
+                            var toast = new bootstrap.Toast(toastElement);
+                            toast.show();
+
+                            // Hide toast after 0.9 seconds
+                            setTimeout(() => {
+                                toast.hide();
+                            }, 900);
+                        }
+                    }).catch(error => console.error("Error copying text: ", error));
+                });
+            });
+
+            let currentStatusElement = null; // To keep track of the currently selected status element
+
+            // Attach click event listener to status buttons
+            document.querySelectorAll('.status-btn').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    currentStatusElement = this.closest('td.stat-val'); // Track the current status element
+
+                    // Show the modal
+                    const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+                    statusModal.show();
+                });
+            });
+
+            // Handle Yes button click
+            document.getElementById('yesButton').addEventListener('click', function () {
+                if (currentStatusElement) {
+                    const statusValue = currentStatusElement.getAttribute('value');
+
+                    // Toggle the status value
+                    const newStatus = statusValue === 'Settled' ? 'Unsettled' : 'Settled';
+                    const offenseVal = currentStatusElement.closest('tr').querySelector('.offense-val').querySelector('button').value;
+
+                    // AJAX call to update the status in the backend
+                    $.ajax({
+                        url: '@Url.Action("Put_Violation_Status", "Violation")',
+                        type: 'PUT',
+                        data: {
+                            status: newStatus, // Send the toggled status
+                            prior_number: offenseVal // Send the offense value from the clicked row
+                        },
+                        dataType: 'text',
+                        contentType: "application/x-www-form-urlencoded",
+                        success: function (data) {
+                            if (data === 'Status Changed.') {
+                                // Show success modal
+                                $('#changedStat').modal('show');
+                                document.getElementById("changedStat1").innerHTML = 'Status Changed.';
+                                setTimeout(function () {
+                                    $('#changedStat').modal('hide');
+                                    // Redirect to the same page after the status change
+                                    window.location.href = window.location.href; // This reloads the page
+                                }, 2000);
+                            } else {
+                                // Show error modal if something went wrong
+                                $('#noRecords').modal('show');
+                                document.getElementById("noRecords1").innerHTML = data;
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            // Show error modal if AJAX request fails
+                            $('#noRecords').modal('show');
+                            document.getElementById("noRecords1").innerHTML = jqXHR.responseText;
+                            $("#get-data").prop("disabled", false);
+                            $("#get-data").html('Update Profile');
+                        }
+                    });
+
+                    // Update the DOM immediately (optional, depending on UX preferences)
+                    currentStatusElement.setAttribute('value', newStatus);
+                    currentStatusElement.querySelector('.status-btn').textContent = newStatus;
+
+                    // Hide the modal
+                    const statusModal = bootstrap.Modal.getInstance(document.getElementById('statusModal'));
+                    statusModal.hide();
+                }
+            });
+
+            // Handle No button click
+            document.getElementById('noButton').addEventListener('click', function () {
+                // Hide the modal without making any changes
+                const statusModal = bootstrap.Modal.getInstance(document.getElementById('statusModal'));
+                statusModal.hide();
+                setTimeout(function () {
+                    $('#changedStat').modal('hide');
+                    // Redirect to the same page after the status change
+                    window.location.href = window.location.href; // This reloads the page
+                }, 2000);
+            });
+        });
+
+        // AJAX for Submit Button
+        document.getElementById('post-data').addEventListener('click', function () {
+            var violationNumber = document.getElementById('violationNumber').value;
+            var offenseID = document.getElementById('offenseID').value;
+
+            // Check if either Student ID or Violation Number is empty
+            if (!violationNumber || !offenseID) {
+                // Show toast notification if any field is missing
+                var errorToast = document.getElementById('errorToast');
+                document.getElementById('errorToastMessage').innerText = 'Missing fields, please complete all fields.';
+                var toast = new bootstrap.Toast(errorToast);
+                toast.show();
+            } else {
+                // Check if at least one checkbox is selected
+                var selectedSanctions = [];
+                document.querySelectorAll('input[type="checkbox"]:checked').forEach(function (checkbox) {
+                    selectedSanctions.push(checkbox.value);
+                });
+
+                // If no checkboxes are selected, show an error toast
+                if (selectedSanctions.length === 0) {
+                    var errorToast = document.getElementById('errorToast');
+                    document.getElementById('errorToastMessage').innerText = 'Please select one sanction.';
+                    var toast = new bootstrap.Toast(errorToast);
+                    toast.show();
+                } else {
+                    // Create data to send in the AJAX request
+                    var data = {
+                        sanction_id: selectedSanctions,
+                        prior_number: violationNumber,
+                        off_id: offenseID
+                    };
+
+                    // AJAX Request to server (adjust URL and method as needed)
+                    $.ajax({
+                        url: '@Url.Action("AddSanction", "Violation")',  // Change this to your server endpoint
+                        method: 'POST',
+                        data: data,
+                        dataType: 'text',
+                        contentType: "application/x-www-form-urlencoded",
+                        success: function (response) {
+                            // Check if the response indicates success
+                            if (response === 'Assigned Successfully.') {
+                                // Show success toast
+                                var successToast = document.getElementById('successToast');
+                                document.getElementById('successToastMessage').innerText = 'Assigned Successfully.';
+                                var toast = new bootstrap.Toast(successToast);
+                                toast.show();
+
+                                // Redirect to the same page after the success toast is shown
+                                setTimeout(function () {
+                                    window.location.href = window.location.href; // This reloads the page
+                                }, 2000);
+                            } else {
+                                // Show error toast if something went wrong
+                                var errorToast = document.getElementById('errorToast');
+                                document.getElementById('errorToastMessage').innerText = response;
+                                var toast = new bootstrap.Toast(errorToast);
+                                toast.show();
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            // Show error toast if AJAX request fails
+                            var errorToast = document.getElementById('errorToast');
+                            document.getElementById('errorToastMessage').innerText = jqXHR.responseText;
+                            var toast = new bootstrap.Toast(errorToast);
+                            toast.show();
+                        }
+                    });
+                }
+            }
+        });
+
+        document.getElementById('reviewSanction').addEventListener('click', function () {
+            $("#reviewSanction").prop("disabled", true);
+            $("#reviewSanction").html('Reviewing...');
+
+            if ($('#reviewSanct').val() == '') {
+                $('#noRecords').modal('show');
+                document.getElementById("noRecordsLabel").innerHTML = 'Fill required field';
+                $("#reviewSanction").prop("disabled", false);
+                $("#reviewSanction").html('Review');
+            } else {
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("SanctionInfo", "dashboard")?studentid=' + encodeURIComponent($('#reviewSanct').val());
+                }, 2000);
+            }
+        });
+
+        $('#MarshallList').click(function () {
+            $('#redirectModal').modal('show');
+            setTimeout(function () {
+                    window.location.href = '@Url.Action("MarshallList", "dashboard")';
+                }, 2000);
+        });
+
+
+        $(document).ready(function () {
+            $('#logOut').click(function () {
+                $('#exampleModal').modal('show');
+                document.getElementById("lblMessage").innerHTML = "Signing out, please wait...";
+                setTimeout(function () {
+                    $('#exampleModal').modal('hide');
+                    window.location.href = '@Url.Action("Logout", "dashboard")';
+                }, 2000);
+            });
+
+        });
+
+        $('#closeBtn1').click(function () {
+            $("#reviewSanction").prop("disabled", false);
+            $("#reviewSanction").html('Review');
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-image: url('logos/gscstudent.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.card {
+    opacity: 0.9;
+}

@@ -1,0 +1,150 @@
+﻿@using front2.Models
+@model HomeModel1
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Student</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+</head>
+<body>
+    <!-- Modal For Setup ticket -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-sm">
+                <div class="modal-body text-center text-secondary">
+                    Setting-up a ticket...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-sm">
+                <div class="modal-body text-center text-danger position-relative">
+                    Signing out, please wait...
+                    <button type="button" class="btn-close position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom shadow-sm">
+        <div class="container-fluid">
+            <button class="btn btn-outline-danger ms-auto d-flex align-items-center gap-1" id="logOut">
+                <span>Logout</span>
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @foreach (SearchMarshall item in Model.searchMarshall)
+                {
+                    <h5 class="text-center text-secondary">@Html.DisplayFor(modelItem => item.role): @Html.DisplayFor(modelItem => item.name)</h5>
+                }
+                <h5 class="text-center fw-bold text-danger">CHECKPOINT</h5>
+                <form class="row justify-content-center align-items-center g-2 mb-3">
+                    <div class="col-auto">
+                        <select class="form-select" id="searchBy" required>
+                            <option selected disabled>Search by</option>
+                            <option value="lastname">Last Name</option>
+                            <option value="firstname">First Name</option>
+                            <option value="studentid">ID</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <input id="searchInput" type="text" class="form-control" name="search_data" placeholder="Enter search data" required disabled>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary" id="searchByBt">
+                            <span class="material-symbols-outlined">search</span>
+                        </button>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>ID</th>
+                                <th>Last Name</th>
+                                <th>First Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (SearchStudentModel item in Model.searchStudent)
+                            {
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-outline-primary hover-button w-100" value="@Html.DisplayFor(modelItem => item.student_id)">
+                                            @Html.DisplayFor(modelItem => item.student_id)
+                                        </button>
+                                    </td>
+                                    <td>@Html.DisplayFor(modelItem => item.last_name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.first_name)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#searchBy').change(function () {
+                $('#searchInput').prop('disabled', !$(this).val());
+            });
+
+            $('form').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                const selectedOption = $('#searchBy').val();
+                const searchInput = $('#searchInput').val().trim();
+
+                if (!searchInput) {
+                    alert('Please enter search data.');
+                    return;
+                }
+
+                const url = `@Url.Action("Search_Student", "Home")?search=${selectedOption}&search_data=${encodeURIComponent(searchInput)}`;
+                window.location.href = url;
+            });
+
+            $('.hover-button').click(function () {
+                const idVal = $(this).val();
+
+                // Show the "Setting-up a ticket" modal
+                $('#loadingModal').modal('show');
+
+                // Redirect after 2 seconds
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Record_Off", "Home")?student_id=' + encodeURIComponent(idVal);
+                }, 2000);
+            });
+
+            $('#logOut').click(function () {
+                // Show the "Signing out" modal
+                $('#logoutModal').modal('show');
+
+                // Redirect after 2 seconds
+                setTimeout(function () {
+                    window.location.href = '@Url.Action("Logout", "dashboard")';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
