@@ -55,9 +55,9 @@ The system operates under **three roles:**
 ## ⚙️ Admin Side
 The **Admin Side** provides a full control panel to manage students, marshals, violations, and sanctions. Below are the main administrative interfaces:
 
-![Admin Dashboard 1](https://github.com/user-attachments/assets/2819cbce-7fb3-46a5-8b7d-bc163871da6e)
-![Admin Dashboard 2](https://github.com/user-attachments/assets/2b5cebcf-bc48-4d4c-b499-59dd8893c83a)
-![Admin Dashboard 3](https://github.com/user-attachments/assets/ffac0e7f-5b8e-4fc9-984a-91b1d7cd0c66)
+![Admin Dashboard 1](https://github.com/user-attachments/assets/a77b5261-c859-4638-b1eb-e44cfad9593e)
+![Admin Dashboard 2](https://github.com/user-attachments/assets/e2c09283-fffe-438b-b55a-9576a3f3d26b)
+![Admin Dashboard 3](https://github.com/user-attachments/assets/f7b4eb56-b7a0-4feb-b80c-c3764d7521cf)
 ![Admin Dashboard 4](https://github.com/user-attachments/assets/7f568dec-8635-4db9-983f-4719a1751cd0)
 ![Admin Dashboard 5](https://github.com/user-attachments/assets/f6b3b01a-82dc-4ebb-8859-f538f4e1ec0f)
 ![Admin Dashboard 6](https://github.com/user-attachments/assets/f35896ad-97c8-4dc4-9b21-8cd076a95fdc)
