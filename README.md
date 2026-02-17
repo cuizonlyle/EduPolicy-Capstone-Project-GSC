@@ -100,4 +100,4 @@ Responsible for system fullstack development.
 
 Summary
 
-EduPolicy demonstrates how technology can streamline policy management in an academic environment. By automating monitoring, reporting, and compliance tracking, it helps administrators maintain discipline efficiently while providing students with transparency regarding their obligations.
+EduPolicy demonstrates how technology can streamline policy management in an academic environment. By enhancing monitoring, reporting, and compliance tracking, it helps administrators maintain discipline efficiently while providing students with transparency regarding their obligations.
