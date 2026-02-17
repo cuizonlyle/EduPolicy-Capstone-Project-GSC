@@ -21,13 +21,8 @@ This project is built using the following technology:
 This project both frontend and backend is currently hosted using Azure Free Tier (F1) and the database is also hosted using FreeDB although limited yet this project is still accessible for demonstration
 but with a catch is that you cannot search any students data at the Marshall Interface using the hosted Website URL (https://gscedupolicyfront.azurewebsites.net) since this project has access to the school's
 API that returns all the simple data of the students that exist such as (ID No., Fullname) and the API is protected by the Cloudflare and it treats the Azure request as a bot and does not return any data however
-you can still use the following credential for testing:
-Admin Login
-username: superuser_l
-password: whoami
-
-Marshall Tab
-unique key: iamroot
+you can still use the following credential for testing:                                                                                                                                                        Admin Login                                                                                                                                                                                                  username: superuser_l                                                                                                                                                                                               password: whoami
+                                                                                                                                                                                                                                                                                                                                                                                                                                Marshall Tab unique key: iamroot
 
 There are sample violation data that is been recorded in the database that is hosted but you cannot add other violation data since again about the cloudflare issue, however you can still manually add student violation data since this project contains the Backend API using Postman thru parameter or use Params and add the following key (prior_no, studentid, last_name, first_name, middle_name, gender, off_id, u_k) with your preferred value and use this URL (https://gscedupolicyback.azurewebsites.net/api/student/violation_add)
 
