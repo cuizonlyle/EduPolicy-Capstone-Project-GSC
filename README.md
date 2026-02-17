@@ -17,16 +17,30 @@ This project is built using the following technology:
 - Postman for API Testing
 - IIS for Application Manual Testing
 
-# 🚀 FEATURES
+# Use Case
+This project both frontend and backend is currently hosted using Azure Free Tier (F1) and the database is also hosted using FreeDB although limited yet this project is still accessible for demonstration
+but with a catch is that you cannot search any students data at the Marshall Interface using the hosted Website URL (https://gscedupolicyfront.azurewebsites.net) since this project has access to the school's
+API that returns all the simple data of the students that exist such as (ID No., Fullname) and the API is protected by the Cloudflare and it treats the Azure request as a bot and does not return any data however
+you can still use the following credential for testing:
+Admin Login
+username: superuser_l
+password: whoami
 
-## 🏠 Main Page
+Marshall Tab
+unique key: iamroot
+
+There are sample violation data that is been recorded in the database that is hosted but you cannot add other violation data since again about the cloudflare issue, however you can still manually add student violation data since this project contains the Backend API using Postman thru parameter or use Params and add the following key (prior_no, studentid, last_name, first_name, middle_name, gender, off_id, u_k) with your preferred value and use this URL (https://gscedupolicyback.azurewebsites.net/api/student/violation_add)
+
+# FEATURES
+
+## Main Page
 The main dashboard provides an overview of system activities, allowing administrators and marshals to monitor student violations and sanctions efficiently.
 
 ![Main Page](https://github.com/user-attachments/assets/b7c3df5d-74f5-4f36-99ea-ff7e55687f41)
 
 ---
 
-## 🔐 Admin and Marshall Login Page
+## Admin and Marshall Login Page
 Both **Admin** and **Marshall** users have dedicated login access to ensure secure and role-based system entry.
 
 ### Admin
@@ -37,14 +51,14 @@ Both **Admin** and **Marshall** users have dedicated login access to ensure secu
 
 ---
 
-## 🎓 Student Monitoring Page
+## Student Monitoring Page
 Students do not have a login page; instead, they can track their policy violations and pending obligations using their **unique school identification number**.
 
 ![Student Monitoring](https://github.com/user-attachments/assets/9050a3a9-eb0f-4f06-9fd9-1111919e941a)
 
 ---
 
-## 👥 User Roles
+## User Roles
 The system operates under **three roles:**  
 - **Admin** – Manages overall system data and user roles.  
 - **Marshall** – Records violations.  
@@ -52,7 +66,7 @@ The system operates under **three roles:**
 
 ---
 
-## ⚙️ Admin Side
+## Admin Side
 The **Admin Side** provides a full control panel to manage students, marshals, violations, and sanctions. Below are the main administrative interfaces:
 
 ![Admin Dashboard 1](https://github.com/user-attachments/assets/a77b5261-c859-4638-b1eb-e44cfad9593e)
@@ -63,7 +77,7 @@ The **Admin Side** provides a full control panel to manage students, marshals, v
 ![Admin Dashboard 6](https://github.com/user-attachments/assets/f35896ad-97c8-4dc4-9b21-8cd076a95fdc)
 
 
-## ⚙️ Marshal Side
+## Marshal Side
 The **Marshal Side** provides a full control panel to record violations. Below are the main Marshall interfaces:
 
 ![Marshall Dashboard 1](https://github.com/user-attachments/assets/7de29774-a192-4e27-bfaf-8a09896fc7bd)
@@ -72,13 +86,13 @@ The **Marshal Side** provides a full control panel to record violations. Below a
 ![Marshall Dashboard 4](https://github.com/user-attachments/assets/92ff360d-a1ff-45ee-b27f-d2577adc866f)
 ![Marshall Dashboard 5](https://github.com/user-attachments/assets/d9707970-fe93-4a86-9e98-cf218e437922)
 
-## ⚙️ Student Side
+## Student Side
 The **Student Side** provides an interface to monitor violation with corresponding sanction. Below are the main Student interface:
 
 
 ![Student Dashboard 1](https://github.com/user-attachments/assets/93fdc2b7-5052-45ec-87ae-aeb744af2d9a)
 
-## 👨‍💻 Researcher & Developer Information
+## Researcher & Developer Information
 
 **Project Manager/Researcher:** Medjie de Padua  
 Responsible for conducting surveys and meetings, gathering data, and preparing the research documentation that supported the system’s development.
@@ -89,6 +103,6 @@ Responsible for system fullstack development.
 **Project Title:** EduPolicy – Web-Based Policy Management System for Golden Success College Students  
 **Research Category:** Capstone Project (Academic Year 2024–2025)  
 
-🧾 Summary
+Summary
 
 EduPolicy demonstrates how technology can streamline policy management in an academic environment. By automating monitoring, reporting, and compliance tracking, it helps administrators maintain discipline efficiently while providing students with transparency regarding their obligations.
