@@ -5,7 +5,7 @@
 
 The purpose of this project is to address the challenges faced by Golden Success College Management in managing student policy violations. The existing manual process, which relies on logbooks, makes it difficult for administrators to monitor offenses effectively and locate specific records when verifying student compliance during clearance signing. Although proofs of compliance exist, the management struggles to retrieve them efficiently due to the volume of student violations.
 
-EduPolicy aims to resolve these issues by developing a web-based policy management system that automates the monitoring and reporting of student violations. The system provides a secure database for storing records, enables real-time tracking of policy infractions across different school levels, and delivers solid proof of compliance without requiring extensive manual record searching, ensuring a more efficient and reliable clearance process.
+EduPolicy aims to resolve these issues by developing a web-based policy management system that streamline the monitoring and reporting of student violations. The system provides a secure database for storing records, enables real-time tracking of policy infractions across different school levels, and delivers solid proof of compliance without requiring extensive manual record searching, ensuring a more efficient and reliable clearance process.
 
 # TECH STACK
 This project is built using the following technology:
